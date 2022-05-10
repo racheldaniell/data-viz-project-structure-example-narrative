@@ -137,9 +137,10 @@ function draw() {
     state.selection === d.activity || state.selection === "all")
     console.log(filteredData)
 
-  svg.selectAll("rect")
+  svg.selectAll("rect.bar")
   .data(filteredData)
   .join("rect")
+  .attr("class","bar")
   .attr("width", xScale.bandwidth)
   .attr("height", d=> height-margin.bottom - yScale(d.count))
   .attr("x", d=>xScale(d.activity))
