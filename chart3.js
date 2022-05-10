@@ -146,7 +146,7 @@ function draw() {
   .attr("x", d=>xScale(d.activity))
   .attr("y", d=>yScale(d.count))
   .attr("fill", staticColor)          
-    .on("mouseover", function(d,i){
+          .on("mouseover", function(d,i){
               tooltip
                   .html(`<div>activity: ${d.activity}</div><div>sightings: ${d.count}</div>`)
                   .style("visibility", "visible")
@@ -157,8 +157,6 @@ function draw() {
                       .attr("fill", hoverColor)
           })
           .on("mousemove", function(){
-             // refer back to specific class of the particular chart when grouping with other charts
-              // d3.select(".tooltip")
               d3.select(".tooltip-bar")
               .style("top", d3.event.pageY - 10 + "px")
               .style("left", d3.event.pageX + 10 + "px");
