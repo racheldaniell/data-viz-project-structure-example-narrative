@@ -67,7 +67,7 @@ function init() {
     .style("position", "relative");
 
   // tooltip = d3.select("body")
-  // change the d3.select to SPECIFIC ID for this graph's <div> instead of just the body
+  // change the d3.select to SPECIFIC ID for this graph's section in the html instead of just the body
   tooltip = d3.select("#four")
   .append("div")
   .attr("class", "tooltip-bar")
@@ -145,45 +145,32 @@ function draw() {
   .attr("height", d=> height-margin.bottom - yScale(d.count))
   .attr("x", d=>xScale(d.activity))
   .attr("y", d=>yScale(d.count))
-  .attr("fill", staticColor)
+  .attr("fill", staticColor)          
     .on("mouseover", function(d,i){
-      tooltip
-      .html(`<div>activity: ${d.activity}</div><div>sightings: ${d.count}</div>`)
-      .style("visibility", "visible")
-      .style("opacity", .8)
-      .style("background", tipColor)
-      d3.select(this)
-          .transition()
-          .attr("fill", hoverColor);
-      })
-          // here make mouseover behavior on d3.select(this)
-          // function must be written out, not with arrow function syntax, for "this" 
-          // positioning is via reference to rect.bar attributes
-          .on('mousemove', 
-            function(d){
-              let xPos = d3.select(this).attr("x")
-              let width = d3.select(this).attr("width")/2
-              let tipPosX = +xPos
-              let yPos = d3.select(this).attr("y")
-              let height = d3.select(this).attr("height")-2
-              let tipPosY = +yPos
-              console.log(xPos)
-              console.log(yPos)
-              console.log('tipPos '+tipPosX+" - "+tipPosY)
-              d3.select('.tooltip-bar').style("display", null)
-              d3.select('.tooltip-bar')
-              .style("left", tipPosX + "px")
-              .style("top",  tipPosY + "px")
-                //.html(html)
-            })
-            .on("mouseout", function(event, d){
               tooltip
-              .html(``)
-              .style("visibility","hidden");
-              d3.select(this)
-                  .transition()
-                  .attr("fill", staticColor);
-              });
+                  .html(`<div>activity: ${d.activity}</div><div>sightings: ${d.count}</div>`)
+                  .style("visibility", "visible")
+                  .style("opacity", .8)
+                  .style("background", tipColor)
+                  d3.select(this)
+                      .transition()
+                      .attr("fill", hoverColor)
+          })
+          .on("mousemove", function(){
+             // refer back to specific class of the particular chart when grouping with other charts
+              // d3.select(".tooltip")
+              d3.select(".tooltip-bar")
+              .style("top", d3.event.pageY - 10 + "px")
+              .style("left", d3.event.pageX + 10 + "px");
+          })
+          .on("mouseout", function (d){
+              tooltip
+                  .html(``)
+                  .style("visiblity", "hidden");
+                  d3.select(this)
+                      .transition()
+                      .attr("fill", staticColor)
+          });
 
 console.log(state)
 }
