@@ -70,7 +70,7 @@ function init() {
   // change the d3.select to SPECIFIC ID for this graph's <div> instead of just the body
   tooltip = d3.select("#four")
   .append("div")
-  .attr("class", "tooltip")
+  .attr("class", "tooltip-bar")
   .style("position", "absolute")
   .style("z-index", "10")
   .style("visibility", "hidden")
@@ -145,8 +145,6 @@ function draw() {
   .attr("x", d=>xScale(d.activity))
   .attr("y", d=>yScale(d.count))
   .attr("fill", staticColor)
-    // remove the term "event" here in parens 
-    // .on("mouseover", function(event,d,i){
     .on("mouseover", function(d,i){
       tooltip
       .html(`<div>activity: ${d.activity}</div><div>sightings: ${d.count}</div>`)
@@ -157,10 +155,9 @@ function draw() {
           .transition()
           .attr("fill", hoverColor);
       })
-
-          // here make mouseover behavior onn d3.select(this)
+          // here make mouseover behavior on d3.select(this)
           // function must be written out, not with arrow function syntax, for "this" 
-          // positioning is via d3.event reference to rect.bar attributes
+          // positioning is via reference to rect.bar attributes
           .on('mousemove', 
             function(d){
               let xPos = d3.select(this).attr("x")
@@ -172,15 +169,13 @@ function draw() {
               console.log(xPos)
               console.log(yPos)
               console.log('tipPos '+tipPosX+" - "+tipPosY)
-              d3.select('.tooltip').style("display", null)
-              d3.select('.tooltip')
+              d3.select('.tooltip-bar').style("display", null)
+              d3.select('.tooltip-bar')
               .style("left", tipPosX + "px")
               .style("top",  tipPosY + "px")
                 //.html(html)
             })
-       
             .on("mouseout", function(event, d){
-            //.on("mouseout", function(d){
               tooltip
               .html(``)
               .style("visibility","hidden");
