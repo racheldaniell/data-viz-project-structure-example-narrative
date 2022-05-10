@@ -70,6 +70,7 @@ function init() {
   // change the d3.select to SPECIFIC ID for this graph's section in the html instead of just the body
   tooltip = d3.select("#four")
   .append("div")
+  .attr("class", "tooltip")
   .attr("class", "tooltip-bar")
   .style("position", "absolute")
   .style("z-index", "10")
@@ -145,30 +146,31 @@ function draw() {
   .attr("height", d=> height-margin.bottom - yScale(d.count))
   .attr("x", d=>xScale(d.activity))
   .attr("y", d=>yScale(d.count))
-  .attr("fill", staticColor)          
-          .on("mouseover", function(d,i){
-              tooltip
-                  .html(`<div>activity: ${d.activity}</div><div>sightings: ${d.count}</div>`)
-                  .style("visibility", "visible")
-                  .style("opacity", .8)
-                  .style("background", tipColor)
-                  d3.select(this)
-                      .transition()
-                      .attr("fill", hoverColor)
-          })
-          .on("mousemove", function(){
-              d3.select(".tooltip-bar")
-              .style("top", d3.event.pageY - 10 + "px")
-              .style("left", d3.event.pageX + 10 + "px");
-          })
-          .on("mouseout", function (d){
-              tooltip
-                  .html(``)
-                  .style("visiblity", "hidden");
-                  d3.select(this)
-                      .transition()
-                      .attr("fill", staticColor)
-          });
+  .attr("fill", staticColor) 
+      .on("mouseover", function(event,d,i){
+      tooltip
+      .html(`<div>activity: ${d.activity}</div><div>sightings: ${d.count}</div>`)
+      .style("visibility", "visible")
+      .style("opacity", .8)
+      .style("background", tipColor)
+      d3.select(this)
+          .transition()
+          .attr("fill", hoverColor);
+      })
+      .on('mousemove', function (event) {
+        tooltip
+          .style('top', event.pageY - 10 + 'px')
+          .style('left', event.pageX + 10 + 'px');
+    })
+    .on("mouseout", function(event, d){
+      tooltip
+      .html(``)
+      .style("visibility","hidden");
+      d3.select(this)
+          .transition()
+          .attr("fill", staticColor);
+      });
+
 
 console.log(state)
 }
