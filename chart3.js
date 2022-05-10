@@ -157,29 +157,37 @@ function draw() {
           .transition()
           .attr("fill", hoverColor);
       })
-      // here "event" is not yet needed in parameter
-      // .on('mousemove', function (event) {
-      .on('mousemove', function () {
-        // change to a d3.select of tooltip
-        //tooltip
-        d3.select(".tooltip")
-        // change positioning to d3.event reference
-        // .style('top', event.pageY - 10 + 'px')
-        // .style('left', event.pageX + 10 + 'px');
-        .style('top', d3.event.pageY - 10 + 'px')
-        .style('left', d3.event.pageX + 10 + 'px');
-    })
 
-    // "event" is no longer needed in the parameter here
-    // .on("mouseout", function(event, d){
-    .on("mouseout", function(d){
-      tooltip
-      .html(``)
-      .style("visibility","hidden");
-      d3.select(this)
-          .transition()
-          .attr("fill", staticColor);
-      });
+          // here make mouseover behavior onn d3.select(this)
+          // function must be written out, not with arrow function syntax, for "this" 
+          // positioning is via d3.event reference to rect.bar attributes
+          .on('mousemove', 
+            function(d){
+              let xPos = d3.select(this).attr("x")
+              let width = d3.select(this).attr("width")/2
+              let tipPosX = +xPos
+              let yPos = d3.select(this).attr("y")
+              let height = d3.select(this).attr("height")-2
+              let tipPosY = +yPos
+              console.log(xPos)
+              console.log(yPos)
+              console.log('tipPos '+tipPosX+" - "+tipPosY)
+              d3.select('.tooltip').style("display", null)
+              d3.select('.tooltip')
+              .style("left", tipPosX + "px")
+              .style("top",  tipPosY + "px")
+                //.html(html)
+            })
+       
+            .on("mouseout", function(event, d){
+            //.on("mouseout", function(d){
+              tooltip
+              .html(``)
+              .style("visibility","hidden");
+              d3.select(this)
+                  .transition()
+                  .attr("fill", staticColor);
+              });
 
 console.log(state)
 }
